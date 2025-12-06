@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Add Student Details</h1>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label>Roll No:</label>
+        <input type="text" name="roll" required><br>
+
+        <label>Course:</label>
+        <select name="course">
+            <option>B.Tech</option>
+            <option>M.Tech</option>
+            <option>MBA</option>
+            <option>BBA</option>
+            <option>BA (Liberal Arts)</option>
+            <option>BFA (Fine Arts)</option>
+            <option>BA LL.B</option>
+            <option>BBA LL.B</option>
+            <option>LL.M</option>
+        </select><br>
+
+        <label>Year:</label>
+        <select name="year">
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+        </select><br>
+
+        <label>Section:</label>
+        <input type="text" name="section" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
