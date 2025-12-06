@@ -7,7 +7,6 @@ app = Flask(__name__)
 EXCEL_FILE = "data.xlsx"
 BLOCKS_SHEET = "Blocks"
 
-# Default blocks configuration
 DEFAULT_BLOCKS = {
     "Learning Centre 1": {"total_classrooms": 3},
     "Learning Centre 2": {"total_classrooms": 3},
@@ -20,13 +19,13 @@ DEFAULT_BLOCKS = {
 def initialize_excel():
     """Create Excel file with default structure if it doesn't exist"""
     if not os.path.exists(EXCEL_FILE):
-        # Create Blocks sheet
+       
         blocks_df = pd.DataFrame({
             'Block Name': list(DEFAULT_BLOCKS.keys()),
             'Total Classrooms': [DEFAULT_BLOCKS[b]['total_classrooms'] for b in DEFAULT_BLOCKS.keys()]
         })
         
-        # Create empty Students sheet
+        
         students_df = pd.DataFrame(columns=['Block', 'Name', 'Roll', 'Course', 'Year', 'Section', 'Class'])
         
         with pd.ExcelWriter(EXCEL_FILE, engine='openpyxl') as writer:
@@ -39,7 +38,7 @@ def load_data():
     initialize_excel()
     
     try:
-        # Read blocks sheet
+      
         blocks_df = pd.read_excel(EXCEL_FILE, sheet_name=BLOCKS_SHEET)
         blocks = {}
         
@@ -50,11 +49,11 @@ def load_data():
                 "students": []
             }
         
-        # Read students sheet
+        
         try:
             students_df = pd.read_excel(EXCEL_FILE, sheet_name='Students')
             
-            # Group students by block (only if dataframe is not empty)
+           
             if not students_df.empty:
                 for _, row in students_df.iterrows():
                     block_name = str(row['Block'])
@@ -74,7 +73,7 @@ def load_data():
         return blocks
     except Exception as e:
         print(f"Error loading data: {e}")
-        # Return default blocks if error occurs
+       
         result = {}
         for block_name, block_data in DEFAULT_BLOCKS.items():
             result[block_name] = {**block_data, "students": []}
@@ -84,7 +83,7 @@ def load_data():
 def save_data(blocks):
     """Save data to Excel file"""
     try:
-        # Prepare blocks data
+        
         blocks_data = []
         for block_name, block_info in blocks.items():
             blocks_data.append({
@@ -93,7 +92,7 @@ def save_data(blocks):
             })
         blocks_df = pd.DataFrame(blocks_data)
         
-        # Prepare students data
+        
         students_data = []
         for block_name, block_info in blocks.items():
             for student in block_info.get('students', []):
@@ -136,7 +135,7 @@ def index():
 
 @app.route('/add_student', methods=['POST'])
 def add_student():
-    # Load fresh data from file
+    
     blocks = load_data()
     
     name = request.form.get('name', '')
@@ -149,7 +148,7 @@ def add_student():
     if not block_name or block_name not in blocks:
         return redirect(url_for('index'))
 
-    # Initialize students list if it doesn't exist
+  
     if "students" not in blocks[block_name]:
         blocks[block_name]["students"] = []
 
@@ -168,7 +167,7 @@ def add_student():
 
 @app.route('/view/<block_name>')
 def view_block(block_name):
-    # Load fresh data from file
+    
     blocks = load_data()
     
     if block_name not in blocks:
@@ -177,6 +176,19 @@ def view_block(block_name):
     block = blocks.get(block_name, {})
     students = block.get("students", [])
     return render_template('view.html', block_name=block_name, students=students)
+@app.route('/delete_student/<block_name>/<roll>')
+def delete_student(block_name, roll):
+    blocks = load_data()
+
+    if block_name in blocks:
+        students = blocks[block_name]["students"]
+        updated_students = [s for s in students if s.get("roll") != roll]
+        blocks[block_name]["students"] = updated_students
+
+        save_data(blocks)
+
+    return redirect(url_for('view_block', block_name=block_name))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=2000)
