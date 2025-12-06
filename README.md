@@ -31,7 +31,6 @@ Developed with a clean and responsive UI, this app simplifies student management
 | ---------- | ---------------------------- |
 | Backend    | Flask (Python)               |
 | Frontend   | HTML, CSS, Bootstrap 5       |
-| Templating | Jinja2                       |
 | Styling    | Custom CSS + Bootstrap Theme |
 
 ---
