@@ -11,7 +11,7 @@ Developed with a clean and responsive UI, this app simplifies student management
 
 ## 👨‍💻 Project Creators
 
-* **Nandhu S**
+**Nandhu S**
 
 ---
 
