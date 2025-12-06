@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Classroom Allotment</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>📚 Classroom Allotment Report</h1>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Course</th>
+            <th>Year</th>
+            <th>Section</th>
+            <th>Allocated Block / Classroom</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.name }}</td>
+            <td>{{ student.roll }}</td>
+            <td>{{ student.course }}</td>
+            <td>{{ student.year }}</td>
+            <td>{{ student.section }}</td>
+            <td>{{ student.block }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">🏠 Home</a>
+</body>
+</html>
